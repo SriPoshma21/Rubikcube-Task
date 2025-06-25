@@ -266,12 +266,40 @@ rotateZ(layer, clockwise = true) {
 const cube = new Cube();
 
 function renderCube() {
-  document.getElementById('cube').innerHTML = getCubeSvg(cube.toString());
+  const cubeNet = document.getElementById('cube');
+  cubeNet.innerHTML = ''; // Clear existing stickers
+
+  const layout = [
+    { face: 'U', startRow: 0, startCol: 3 },
+    { face: 'L', startRow: 3, startCol: 0 },
+    { face: 'F', startRow: 3, startCol: 3 },
+    { face: 'R', startRow: 3, startCol: 6 },
+    { face: 'B', startRow: 3, startCol: 9 },
+    { face: 'D', startRow: 6, startCol: 3 },
+  ];
+
+  // Fill the grid with empty cells
+  for (let i = 0; i < 12 * 9; i++) {
+    const div = document.createElement('div');
+    cubeNet.appendChild(div);
+  }
+
+  layout.forEach(({ face, startRow, startCol }) => {
+    const stickers = cube.faces[face];
+    stickers.forEach((color, i) => {
+      const row = startRow + Math.floor(i / 3);
+      const col = startCol + (i % 3);
+      const index = row * 12 + col;
+      const cell = cubeNet.children[index];
+      cell.className = `sticker ${color}`;
+    });
+  });
 }
+
 
 function scramble() {
   cube.scramble();
-  renderCube();
+  // renderCube();
 }
 
 function solveCube() {
@@ -286,5 +314,5 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-
+renderCube()
 

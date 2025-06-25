@@ -3,23 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <title>Rubik's Cube Solver</title>
-  <style>
+  <!-- <style>
     body {
       font-family: sans-serif;
       text-align: center;
       margin: 20px;
     }
+
     #cube {
       margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(12, 30px);
+      grid-template-rows: repeat(9, 30px);
+      gap: 2px;
+      justify-content: center;
     }
+
+    .sticker {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #000;
+    }
+
+    .w { background: white; }
+    .y { background: #FFD500; }
+    .r { background: red; }
+    .o { background: orange; }
+    .g { background: green; }
+    .b { background: blue; }
+
     button {
       margin: 5px;
       padding: 10px 20px;
     }
-  </style>
+  </style> -->
+  <style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: #f9f9f9;
+  }
+
+  #cube {
+    display: grid;
+    grid-template-columns: repeat(12, 30px);
+    grid-template-rows: repeat(9, 30px);
+    gap: 2px;
+    margin: 20px auto;
+    width: fit-content;
+  }
+
+  .sticker {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    box-sizing: border-box;
+  }
+
+  .w { background: #ffffff; }
+  .y { background: #FFD500; }
+  .r { background: #FF0000; }
+  .o { background: #FF8C00; }
+  .g { background: #00FF00; }
+  .b { background: #0000FF; }
+
+  button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 20px;
+    line-height: 1.6;
+  }
+</style>
+
 </head>
 <body>
-  <h1>Rubik's Cube Solver</h1>
+  <h3>Rubik's Cube Solver</h3>
   <div id="cube"></div>
   <button onclick="scramble()">Scramble</button>
   <button onclick="solveCube()">Solve</button>
@@ -30,7 +107,6 @@
     Use <b>Shift</b> for reverse moves  
   </p>
 
-  <script src="getCubeSvg.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

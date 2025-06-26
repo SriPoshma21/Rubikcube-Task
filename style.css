@@ -1,46 +1,104 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #111;
-  color: white;
-  padding: 20px;
-}
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      color: white;
+    }
 
-.cube-container {
-  display: grid;
-  grid-template-columns: repeat(12, 30px);
-  grid-template-rows: repeat(9, 30px);
-  gap: 2px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+    h2 {
+      margin-bottom: 10px;
+    }
 
-.face {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #444;
-  box-sizing: border-box;
-}
+    .game-instructions {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
 
-.empty {
-  background: #222;
-}
+    .main-layout {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
 
-.white { background: white; }
-.yellow { background: yellow; }
-.red    { background: red; }
-.orange { background: orange; }
-.blue   { background: blue; }
-.green  { background: green; }
+    .cube-container {
+      display: grid;
+      grid-template-columns: repeat(12, 30px);
+      grid-template-rows: repeat(9, 30px);
+      gap: 1px;
+    }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
+    .face {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #333;
+      box-sizing: border-box;
+    }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+    .face.white { background: white; }
+    .face.yellow { background: yellow; }
+    .face.red { background: red; }
+    .face.orange { background: orange; }
+    .face.blue { background: blue; }
+    .face.green { background: green; }
+    .face.empty { background: #111; border: 1px solid #111; }
+
+    .controls {
+      margin: 10px 0;
+    }
+
+    .controls button {
+      margin: 6px;
+      padding: 8px 14px;
+      font-size: 14px;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #ddd;
+      transform: scale(1.05);
+    }
+
+    .instruction {
+      font-weight: bold;
+      margin: 15px 0 8px;
+    }
+
+    .keys {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .key-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .key-button {
+      padding: 6px 10px;
+      background: #222;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 4px;
+      font-weight: bold;
+      min-width: 36px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .key-button.active {
+      background-color: limegreen;
+      color: white;
+      transform: scale(1.1);
+      border-color: white;
+    }

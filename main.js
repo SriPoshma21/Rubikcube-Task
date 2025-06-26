@@ -16,14 +16,6 @@ class RubiksCube {
     };
   }
 
-  saveState() {
-    return JSON.parse(JSON.stringify(this.faces));
-  }
-
-  restoreState(state) {
-    this.faces = JSON.parse(JSON.stringify(state));
-  }
-
   rotateFace(f) {
     const a = this.faces[f], t = [...a];
     a[0] = t[6]; a[1] = t[3]; a[2] = t[0];
@@ -112,8 +104,7 @@ class CubeUI {
     this.cube = new RubiksCube();
     this.scramble = [];
     this.solution = [];
-    this.states = [];
-    this.index = 0;
+    this.manualIndex = 0;
 
     this.init();
     this.render();
@@ -121,44 +112,92 @@ class CubeUI {
 
   init() {
     this.cubeElement = document.getElementById("cube");
+    this.instruction = document.getElementById("instruction");
+    this.keyDisplay = document.getElementById("keyDisplay");
+    this.keyButtons = document.getElementById("keyButtons");
+
     document.getElementById("scrambleBtn").onclick = () => this.scrambleCube();
-    document.getElementById("solveBtn").onclick = () => this.solveCube();
+    document.getElementById("solveBtn").onclick = () => this.autoSolve();
+    document.getElementById("manualSolveBtn").onclick = () => this.manualSolve();
     document.getElementById("resetBtn").onclick = () => this.resetCube();
+
+    document.addEventListener("keydown", (e) => {
+      if (!this.solution.length || this.manualIndex >= this.solution.length) return;
+      const key = e.key.toUpperCase();
+      const expected = this.solution[this.manualIndex];
+      if (key === expected[0]) {
+        this.cube.executeMove(expected);
+        this.manualIndex++;
+        this.render();
+        this.updateManualInstructions();
+      }
+    });
   }
 
   scrambleCube() {
     this.cube.reset();
     this.scramble = this.cube.generateScramble();
     this.solution = this.cube.getSolution(this.scramble);
-    this.states = [this.cube.saveState()];
-    for (const move of this.solution) {
-      this.cube.executeMove(move);
-      this.states.push(this.cube.saveState());
-    }
-    this.cube.restoreState(this.states[0]);
-    this.index = 0;
+    this.manualIndex = 0;
     this.render();
+    this.instruction.innerText = "Scrambled! Choose Auto Solve or Manual Solve.";
+    this.keyButtons.innerHTML = "";
   }
 
-  solveCube() {
-    if (!this.states.length) return;
+  autoSolve() {
+    let i = 0;
     const step = () => {
-      if (this.index < this.solution.length) {
-        this.index++;
-        this.cube.restoreState(this.states[this.index]);
+      if (i < this.solution.length) {
+        this.highlightKey(this.solution[i]);
+        this.cube.executeMove(this.solution[i++]);
         this.render();
-        setTimeout(step, 300);
+        setTimeout(step, 1000);
+      } else {
+        this.instruction.innerText = "✅ Cube Solved Automatically!";
       }
     };
     step();
+  }
+
+  manualSolve() {
+    if (!this.solution.length) return;
+    this.manualIndex = 0;
+    this.updateManualInstructions();
+  }
+
+  updateManualInstructions() {
+    if (this.manualIndex < this.solution.length) {
+      const move = this.solution[this.manualIndex];
+      this.instruction.innerText = `Manual Solve: Press "${move}" key (${this.manualIndex + 1}/${this.solution.length})`;
+      this.displayKeyButtons(this.solution.slice(this.manualIndex));
+    } else {
+      this.instruction.innerText = "🎉 Challenge Completed: Cube Solved!";
+      this.keyButtons.innerHTML = "";
+    }
+  }
+
+  displayKeyButtons(moves) {
+    this.keyButtons.innerHTML = "";
+    moves.slice(0, 6).forEach((move, i) => {
+      const btn = document.createElement("div");
+      btn.className = "key-button";
+      btn.innerText = move;
+      if (i === 0) btn.classList.add("active");
+      this.keyButtons.appendChild(btn);
+    });
+  }
+
+  highlightKey(move) {
+    this.keyButtons.innerHTML = `<div class="key-button active">${move}</div>`;
   }
 
   resetCube() {
     this.cube.reset();
     this.scramble = [];
     this.solution = [];
-    this.states = [];
-    this.index = 0;
+    this.manualIndex = 0;
+    this.instruction.innerText = "";
+    this.keyButtons.innerHTML = "";
     this.render();
   }
 

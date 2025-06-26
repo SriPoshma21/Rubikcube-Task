@@ -7,16 +7,32 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Rubik's Cube</h1>
+  <h2>Rubik's Cube</h2>
+  <div class="game-instructions">
+    Welcome to the Rubik's Cube Solver!<br/>
+    👉 To begin, click the <strong>Scramble</strong> button to mix up the cube.<br/>
+    🔄 Then choose <strong>Auto Solve</strong> to watch it solve itself, or <strong>Manual Solve</strong> to solve step-by-step using your keyboard.
+  </div>
 
-  <div id="cube" class="cube-container"></div>
+  <div class="main-layout">
+    <!-- Left: Cube -->
+    <div id="cube" class="cube-container"></div>
 
-  <div class="controls">
-    <button id="scrambleBtn">Scramble</button>
-    <button id="solveBtn">Solve</button>
-    <button id="resetBtn">Reset</button>
+    <!-- Right: Instructions + keys -->
+    <div class="side-panel">
+      <div class="controls">
+        <button id="scrambleBtn">Scramble</button>
+        <button id="solveBtn">Auto Solve</button>
+        <button id="manualSolveBtn">Manual Solve</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+
+      <div id="instruction" class="instruction"></div>
+      <div id="keyDisplay" class="keys"></div>
+      <div id="keyButtons" class="key-buttons"></div>
+    </div>
   </div>
 
   <script src="main.js"></script>
 </body>
-</html> 
+</html>

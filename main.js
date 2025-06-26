@@ -1,318 +1,196 @@
-class Cube {
+class RubiksCube {
   constructor() {
     this.faces = {
-      U: Array(9).fill('w'),
-      D: Array(9).fill('y'),
-      F: Array(9).fill('g'),
-      B: Array(9).fill('b'),
-      L: Array(9).fill('o'),
-      R: Array(9).fill('r'),
+      top: Array(9).fill(0), bottom: Array(9).fill(1),
+      front: Array(9).fill(2), back: Array(9).fill(3),
+      right: Array(9).fill(4), left: Array(9).fill(5),
     };
-    this.moves = [];
+    this.colors = ["white", "yellow", "red", "orange", "blue", "green"];
   }
 
-  toString() {
-    return Object.values(this.faces).flat().join('');
-  }
-
-  rotateFace(face, clockwise = true) {
-    const f = this.faces[face];
-    const rotated = clockwise
-      ? [f[6], f[3], f[0], f[7], f[4], f[1], f[8], f[5], f[2]]
-      : [f[2], f[5], f[8], f[1], f[4], f[7], f[0], f[3], f[6]];
-    this.faces[face] = rotated;
-  }
-
- rotateX(layer, clockwise = true) {
-  const { U, D, F, B, L, R } = this.faces;
-
-  if (layer === 'R') {
-    this.rotateFace('R', clockwise);
-
-    const u = [U[2], U[5], U[8]];
-    const f = [F[2], F[5], F[8]];
-    const d = [D[2], D[5], D[8]];
-    const b = [B[6], B[3], B[0]];
-
-    if (clockwise) {
-      [F[2], F[5], F[8]] = u;
-      [D[2], D[5], D[8]] = f;
-      [B[6], B[3], B[0]] = d;
-      [U[2], U[5], U[8]] = b;
-    } else {
-      [B[6], B[3], B[0]] = u;
-      [D[2], D[5], D[8]] = b;
-      [F[2], F[5], F[8]] = d;
-      [U[2], U[5], U[8]] = f;
-    }
-  }
-
-  else if (layer === 'L') {
-    this.rotateFace('L', clockwise);
-
-    const u = [U[0], U[3], U[6]];
-    const f = [F[0], F[3], F[6]];
-    const d = [D[0], D[3], D[6]];
-    const b = [B[8], B[5], B[2]];
-
-    if (clockwise) {
-      [F[0], F[3], F[6]] = u;
-      [D[0], D[3], D[6]] = f;
-      [B[8], B[5], B[2]] = d;
-      [U[0], U[3], U[6]] = b;
-    } else {
-      [B[8], B[5], B[2]] = u;
-      [D[0], D[3], D[6]] = b;
-      [F[0], F[3], F[6]] = d;
-      [U[0], U[3], U[6]] = f;
-    }
-  }
-
-  else if (layer === 'M') {
-    const u = [U[1], U[4], U[7]];
-    const f = [F[1], F[4], F[7]];
-    const d = [D[1], D[4], D[7]];
-    const b = [B[7], B[4], B[1]];
-
-    if (clockwise) {
-      [F[1], F[4], F[7]] = u;
-      [D[1], D[4], D[7]] = f;
-      [B[7], B[4], B[1]] = d;
-      [U[1], U[4], U[7]] = b;
-    } else {
-      [B[7], B[4], B[1]] = u;
-      [D[1], D[4], D[7]] = b;
-      [F[1], F[4], F[7]] = d;
-      [U[1], U[4], U[7]] = f;
-    }
-  }
-}
-
-
-  rotateY(layer, clockwise = true) {
-  const { U, D, F, B, L, R } = this.faces;
-
-  if (layer === 'U') {
-    this.rotateFace('U', clockwise);
-
-    const f = F.slice(0, 3);
-    const r = R.slice(0, 3);
-    const b = B.slice(0, 3);
-    const l = L.slice(0, 3);
-
-    if (clockwise) {
-      [R[0], R[1], R[2]] = f;
-      [B[0], B[1], B[2]] = r;
-      [L[0], L[1], L[2]] = b;
-      [F[0], F[1], F[2]] = l;
-    } else {
-      [L[0], L[1], L[2]] = f;
-      [B[0], B[1], B[2]] = l;
-      [R[0], R[1], R[2]] = b;
-      [F[0], F[1], F[2]] = r;
-    }
-  }
-
-  else if (layer === 'D') {
-    this.rotateFace('D', clockwise);
-
-    const f = F.slice(6, 9);
-    const r = R.slice(6, 9);
-    const b = B.slice(6, 9);
-    const l = L.slice(6, 9);
-
-    if (clockwise) {
-      [R[6], R[7], R[8]] = f;
-      [B[6], B[7], B[8]] = r;
-      [L[6], L[7], L[8]] = b;
-      [F[6], F[7], F[8]] = l;
-    } else {
-      [L[6], L[7], L[8]] = f;
-      [B[6], B[7], B[8]] = l;
-      [R[6], R[7], R[8]] = b;
-      [F[6], F[7], F[8]] = r;
-    }
-  }
-
-  else if (layer === 'E') {
-    const f = [F[3], F[4], F[5]];
-    const r = [R[3], R[4], R[5]];
-    const b = [B[3], B[4], B[5]];
-    const l = [L[3], L[4], L[5]];
-
-    if (clockwise) {
-      [R[3], R[4], R[5]] = f;
-      [B[3], B[4], B[5]] = r;
-      [L[3], L[4], L[5]] = b;
-      [F[3], F[4], F[5]] = l;
-    } else {
-      [L[3], L[4], L[5]] = f;
-      [B[3], B[4], B[5]] = l;
-      [R[3], R[4], R[5]] = b;
-      [F[3], F[4], F[5]] = r;
-    }
-  }
-}
-
-rotateZ(layer, clockwise = true) {
-  const { U, D, F, B, L, R } = this.faces;
-
-  if (layer === 'F') {
-    this.rotateFace('F', clockwise);
-
-    const u = [U[6], U[7], U[8]];
-    const r = [R[0], R[3], R[6]];
-    const d = [D[2], D[1], D[0]];
-    const l = [L[8], L[5], L[2]];
-
-    if (clockwise) {
-      [R[0], R[3], R[6]] = u;
-      [D[0], D[1], D[2]] = r.reverse();
-      [L[2], L[5], L[8]] = d;
-      [U[6], U[7], U[8]] = l.reverse();
-    } else {
-      [L[2], L[5], L[8]] = u.reverse();
-      [D[0], D[1], D[2]] = l;
-      [R[0], R[3], R[6]] = d.reverse();
-      [U[6], U[7], U[8]] = r;
-    }
-  }
-
-  else if (layer === 'B') {
-    this.rotateFace('B', clockwise);
-
-    const u = [U[2], U[1], U[0]];
-    const r = [R[2], R[5], R[8]];
-    const d = [D[6], D[7], D[8]];
-    const l = [L[0], L[3], L[6]];
-
-    if (clockwise) {
-      [L[0], L[3], L[6]] = u;
-      [D[6], D[7], D[8]] = l.reverse();
-      [R[2], R[5], R[8]] = d;
-      [U[0], U[1], U[2]] = r.reverse();
-    } else {
-      [R[2], R[5], R[8]] = u.reverse();
-      [D[6], D[7], D[8]] = r;
-      [L[0], L[3], L[6]] = d.reverse();
-      [U[0], U[1], U[2]] = l;
-    }
-  }
-
-  else if (layer === 'S') {
-    const u = [U[3], U[4], U[5]];
-    const r = [R[1], R[4], R[7]];
-    const d = [D[5], D[4], D[3]];
-    const l = [L[7], L[4], L[1]];
-
-    if (clockwise) {
-      [R[1], R[4], R[7]] = u;
-      [D[3], D[4], D[5]] = r.reverse();
-      [L[1], L[4], L[7]] = d;
-      [U[3], U[4], U[5]] = l.reverse();
-    } else {
-      [L[1], L[4], L[7]] = u.reverse();
-      [D[3], D[4], D[5]] = l;
-      [R[1], R[4], R[7]] = d.reverse();
-      [U[3], U[4], U[5]] = r;
-    }
-  }
-}
-
-
-  makeMove(key, reverse = false) {
-    const moveMap = {
-      q: () => this.rotateX('L', !reverse),
-      w: () => this.rotateX('M', !reverse),
-      e: () => this.rotateX('R', !reverse),
-      i: () => this.rotateY('U', !reverse),
-      o: () => this.rotateY('E', !reverse),
-      p: () => this.rotateY('D', !reverse),
-      f: () => this.rotateZ('F', !reverse),
-      d: () => this.rotateZ('S', !reverse),
-      h: () => this.rotateZ('B', !reverse),
+  reset() {
+    this.faces = {
+      top: Array(9).fill(0), bottom: Array(9).fill(1),
+      front: Array(9).fill(2), back: Array(9).fill(3),
+      right: Array(9).fill(4), left: Array(9).fill(5),
     };
-    if (moveMap[key]) {
-      moveMap[key]();
-      this.moves.push(key + (reverse ? "'" : ''));
-      renderCube();
+  }
+
+  saveState() {
+    return JSON.parse(JSON.stringify(this.faces));
+  }
+
+  restoreState(state) {
+    this.faces = JSON.parse(JSON.stringify(state));
+  }
+
+  rotateFace(f) {
+    const a = this.faces[f], t = [...a];
+    a[0] = t[6]; a[1] = t[3]; a[2] = t[0];
+    a[3] = t[7]; a[4] = t[4]; a[5] = t[1];
+    a[6] = t[8]; a[7] = t[5]; a[8] = t[2];
+  }
+
+  R() { this.rotateFace("right");
+    const { top, front, bottom, back } = this.faces;
+    const t = [top[2], top[5], top[8]];
+    [top[2], top[5], top[8]] = [front[2], front[5], front[8]];
+    [front[2], front[5], front[8]] = [bottom[2], bottom[5], bottom[8]];
+    [bottom[2], bottom[5], bottom[8]] = [back[6], back[3], back[0]];
+    [back[6], back[3], back[0]] = t;
+  }
+
+  L() { this.rotateFace("left");
+    const { top, front, bottom, back } = this.faces;
+    const t = [top[0], top[3], top[6]];
+    [top[0], top[3], top[6]] = [back[8], back[5], back[2]];
+    [back[8], back[5], back[2]] = [bottom[0], bottom[3], bottom[6]];
+    [bottom[0], bottom[3], bottom[6]] = [front[0], front[3], front[6]];
+    [front[0], front[3], front[6]] = t;
+  }
+
+  U() { this.rotateFace("top");
+    const { front, right, back, left } = this.faces;
+    const t = front.slice(0, 3);
+    front.splice(0, 3, ...right.slice(0, 3));
+    right.splice(0, 3, ...back.slice(0, 3));
+    back.splice(0, 3, ...left.slice(0, 3));
+    left.splice(0, 3, ...t);
+  }
+
+  D() { this.rotateFace("bottom");
+    const { front, right, back, left } = this.faces;
+    const t = front.slice(6, 9);
+    front.splice(6, 3, ...left.slice(6, 9));
+    left.splice(6, 3, ...back.slice(6, 9));
+    back.splice(6, 3, ...right.slice(6, 9));
+    right.splice(6, 3, ...t);
+  }
+
+  F() { this.rotateFace("front");
+    const { top, left, bottom, right } = this.faces;
+    const t = [top[6], top[7], top[8]];
+    [top[6], top[7], top[8]] = [left[8], left[5], left[2]];
+    [left[8], left[5], left[2]] = [bottom[2], bottom[1], bottom[0]];
+    [bottom[2], bottom[1], bottom[0]] = [right[0], right[3], right[6]];
+    [right[0], right[3], right[6]] = t;
+  }
+
+  B() { this.rotateFace("back");
+    const { top, right, bottom, left } = this.faces;
+    const t = [top[0], top[1], top[2]];
+    [top[0], top[1], top[2]] = [right[2], right[5], right[8]];
+    [right[2], right[5], right[8]] = [bottom[8], bottom[7], bottom[6]];
+    [bottom[8], bottom[7], bottom[6]] = [left[6], left[3], left[0]];
+    [left[6], left[3], left[0]] = t;
+  }
+
+  executeMove(m) {
+    const move = m.replace("'", "");
+    for (let i = 0; i < (m.includes("'") ? 3 : 1); i++) {
+      this[move]();
     }
   }
 
-  scramble() {
-    const keys = ['q', 'w', 'e', 'i', 'o', 'p', 'f', 'd', 'h'];
+  generateScramble() {
+    const moves = ["R", "R'", "L", "L'", "U", "U'", "D", "D'", "F", "F'", "B", "B'"];
+    const scramble = [];
     for (let i = 0; i < 20; i++) {
-      const key = keys[Math.floor(Math.random() * keys.length)];
-      this.makeMove(key, Math.random() > 0.5);
+      scramble.push(moves[Math.floor(Math.random() * moves.length)]);
+    }
+    scramble.forEach(m => this.executeMove(m));
+    return scramble;
+  }
+
+  getSolution(scramble) {
+    return scramble.slice().reverse().map(m => m.includes("'") ? m[0] : m + "'");
+  }
+}
+
+class CubeUI {
+  constructor() {
+    this.cube = new RubiksCube();
+    this.scramble = [];
+    this.solution = [];
+    this.states = [];
+    this.index = 0;
+
+    this.init();
+    this.render();
+  }
+
+  init() {
+    this.cubeElement = document.getElementById("cube");
+    document.getElementById("scrambleBtn").onclick = () => this.scrambleCube();
+    document.getElementById("solveBtn").onclick = () => this.solveCube();
+    document.getElementById("resetBtn").onclick = () => this.resetCube();
+  }
+
+  scrambleCube() {
+    this.cube.reset();
+    this.scramble = this.cube.generateScramble();
+    this.solution = this.cube.getSolution(this.scramble);
+    this.states = [this.cube.saveState()];
+    for (const move of this.solution) {
+      this.cube.executeMove(move);
+      this.states.push(this.cube.saveState());
+    }
+    this.cube.restoreState(this.states[0]);
+    this.index = 0;
+    this.render();
+  }
+
+  solveCube() {
+    if (!this.states.length) return;
+    const step = () => {
+      if (this.index < this.solution.length) {
+        this.index++;
+        this.cube.restoreState(this.states[this.index]);
+        this.render();
+        setTimeout(step, 300);
+      }
+    };
+    step();
+  }
+
+  resetCube() {
+    this.cube.reset();
+    this.scramble = [];
+    this.solution = [];
+    this.states = [];
+    this.index = 0;
+    this.render();
+  }
+
+  render() {
+    this.cubeElement.innerHTML = "";
+    const layout = [
+      ["", "", "", "top", "top", "top", "", "", "", "", "", ""],
+      ["", "", "", "top", "top", "top", "", "", "", "", "", ""],
+      ["", "", "", "top", "top", "top", "", "", "", "", "", ""],
+      ["left", "left", "left", "front", "front", "front", "right", "right", "right", "back", "back", "back"],
+      ["left", "left", "left", "front", "front", "front", "right", "right", "right", "back", "back", "back"],
+      ["left", "left", "left", "front", "front", "front", "right", "right", "right", "back", "back", "back"],
+      ["", "", "", "bottom", "bottom", "bottom", "", "", "", "", "", ""],
+      ["", "", "", "bottom", "bottom", "bottom", "", "", "", "", "", ""],
+      ["", "", "", "bottom", "bottom", "bottom", "", "", "", "", "", ""],
+    ];
+
+    const counts = { top: 0, bottom: 0, front: 0, back: 0, left: 0, right: 0 };
+    for (let r = 0; r < 9; r++) {
+      for (let c = 0; c < 12; c++) {
+        const face = layout[r][c];
+        const div = document.createElement("div");
+        if (!face) {
+          div.className = "face empty";
+        } else {
+          const color = this.cube.colors[this.cube.faces[face][counts[face]++]];
+          div.className = `face ${color}`;
+        }
+        this.cubeElement.appendChild(div);
+      }
     }
   }
-
- solve() {
-  this.faces = {
-    U: Array(9).fill('w'),
-    D: Array(9).fill('y'),
-    F: Array(9).fill('g'),
-    B: Array(9).fill('b'),
-    L: Array(9).fill('o'),
-    R: Array(9).fill('r'),
-  };
-  this.moves = [];
-  alert("Cube reset to solved state (stub solver).");
 }
 
-
-}
-
-const cube = new Cube();
-
-function renderCube() {
-  const cubeNet = document.getElementById('cube');
-  cubeNet.innerHTML = ''; // Clear existing stickers
-
-  const layout = [
-    { face: 'U', startRow: 0, startCol: 3 },
-    { face: 'L', startRow: 3, startCol: 0 },
-    { face: 'F', startRow: 3, startCol: 3 },
-    { face: 'R', startRow: 3, startCol: 6 },
-    { face: 'B', startRow: 3, startCol: 9 },
-    { face: 'D', startRow: 6, startCol: 3 },
-  ];
-
-  // Fill the grid with empty cells
-  for (let i = 0; i < 12 * 9; i++) {
-    const div = document.createElement('div');
-    cubeNet.appendChild(div);
-  }
-
-  layout.forEach(({ face, startRow, startCol }) => {
-    const stickers = cube.faces[face];
-    stickers.forEach((color, i) => {
-      const row = startRow + Math.floor(i / 3);
-      const col = startCol + (i % 3);
-      const index = row * 12 + col;
-      const cell = cubeNet.children[index];
-      cell.className = `sticker ${color}`;
-    });
-  });
-}
-
-
-function scramble() {
-  cube.scramble();
-  // renderCube();
-}
-
-function solveCube() {
-  cube.solve();
-  renderCube();
-}
-
-document.addEventListener('keydown', (e) => {
-  const key = e.key.toLowerCase();
-  if ("qweiopfdh".includes(key)) {
-    cube.makeMove(key, e.shiftKey);
-  }
-});
-
-renderCube()
-
+document.addEventListener("DOMContentLoaded", () => new CubeUI());
